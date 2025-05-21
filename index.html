@@ -70,7 +70,52 @@
         <!-- Added dynamic animations and interactive widgets to the Dashboard -->
         <div class="dashboard grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
           <!-- Daily Risk Score Panel with Visual Gauge using Tailwind Classes -->
-          <div class="panel bg-gradient-to-r from-green-400 to-blue-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 animate-fade-in">
+          <div class="panel bg-gradient-to-r from-green-400 to-blue-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 animate-fade-in relative">
+            <!-- Tooltip Icon and Panel -->
+            <div class="absolute top-2 right-2 group z-20">
+              <button class="focus:outline-none" aria-label="Show component tooltips">
+                <span class="text-lg">👥</span>
+              </button>
+              <div class="z-50 absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg p-4 text-left text-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 text-gray-900">
+                <!-- Task + Persona Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">👥</span> Task + Persona</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li><span class="font-medium">OT:</span> Operations Supervisor – reviews risk score, initiates mitigations</li>
+                    <li><span class="font-medium">IT:</span> Data Scientist – maintains scoring logic</li>
+                    <li><span class="font-medium">Cross-functional:</span> Safety SME – validates risk factors</li>
+                  </ul>
+                  <div class="mt-1 text-xs text-gray-500">Scale: Can this logic be reused for other sites? Will it handle 10× more data?</div>
+                </div>
+                <!-- Design Intent Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🎯</span> Design Intent</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Summarize daily operational risk for quick review</li>
+                    <li>Requires: Telemetry, incident logs, weather data</li>
+                    <li class="text-xs text-gray-500">Prompt: Could this be parameterized for other risk types?</li>
+                  </ul>
+                </div>
+                <!-- AI Impact Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🧠</span> AI Impact</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li class="text-green-600">+ Reduces manual risk assessment workload</li>
+                    <li class="text-red-600">– Risk: Over-trust in automated scores</li>
+                    <li class="text-xs text-gray-500">Nudge: Show confidence, allow user override</li>
+                  </ul>
+                </div>
+                <!-- Implementation Helper Tooltip -->
+                <div>
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🛠️</span> Implementation Helper</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Is this duplicating an existing dashboard?</li>
+                    <li>Can this logic be handled by a low-code tool?</li>
+                    <li>Will this still make sense in 6 months?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <h2 class="text-xl font-bold mb-2">Daily Risk Score</h2>
             
             <!-- Enhanced Interactive Visual Risk Gauge -->
@@ -180,7 +225,52 @@
           </div>
 
           <!-- Safety Achievement Panel -->
-          <div class="panel bg-gradient-to-r from-emerald-400 to-green-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+          <div class="panel bg-gradient-to-r from-emerald-400 to-green-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 relative">
+            <!-- Tooltip Icon and Panel -->
+            <div class="absolute top-2 right-2 group z-20">
+              <button class="focus:outline-none" aria-label="Show component tooltips">
+                <span class="text-lg">👥</span>
+              </button>
+              <div class="z-50 absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg p-4 text-left text-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 text-gray-900">
+                <!-- Task + Persona Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">👥</span> Task + Persona</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li><span class="font-medium">OT:</span> Operations Supervisor – tracks safety streaks</li>
+                    <li><span class="font-medium">IT:</span> Software Engineer – maintains achievement logic</li>
+                    <li><span class="font-medium">Cross-functional:</span> Project Manager – reports on milestones</li>
+                  </ul>
+                  <div class="mt-1 text-xs text-gray-500">Scale: Can this logic be reused for other teams? Will it handle more milestones?</div>
+                </div>
+                <!-- Design Intent Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🎯</span> Design Intent</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Highlight safety achievements and progress</li>
+                    <li>Requires: Incident logs, attendance data</li>
+                    <li class="text-xs text-gray-500">Prompt: Is this tightly coupled to one site?</li>
+                  </ul>
+                </div>
+                <!-- AI Impact Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🧠</span> AI Impact</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li class="text-green-600">+ Motivates safe behavior with positive feedback</li>
+                    <li class="text-red-600">– Risk: Overemphasis on streaks may hide near-misses</li>
+                    <li class="text-xs text-gray-500">Nudge: Show context, not just streaks</li>
+                  </ul>
+                </div>
+                <!-- Implementation Helper Tooltip -->
+                <div>
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🛠️</span> Implementation Helper</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Is this duplicating an existing recognition system?</li>
+                    <li>Can this be automated with existing data?</li>
+                    <li>Will this logic scale to multiple teams?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <div class="flex justify-between items-center mb-3">
               <h2 class="text-xl font-bold">Safety Achievement</h2>
               <button class="toggle-btn bg-white text-green-500 px-2 py-1 rounded-lg shadow-md hover:bg-green-100 text-xs" aria-label="Toggle safety milestones details" title="Toggle safety milestones details">Toggle</button>
@@ -255,7 +345,52 @@
           </div>
 
           <!-- Weather Forecast Panel with Icons and Detailed Information -->
-          <div class="panel bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+          <div class="panel bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 relative">
+            <!-- Tooltip Icon and Panel -->
+            <div class="absolute top-2 right-2 group z-20">
+              <button class="focus:outline-none" aria-label="Show component tooltips">
+                <span class="text-lg">👥</span>
+              </button>
+              <div class="z-50 absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg p-4 text-left text-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 text-gray-900">
+                <!-- Task + Persona Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">👥</span> Task + Persona</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li><span class="font-medium">OT:</span> Operations Supervisor – monitors weather impact</li>
+                    <li><span class="font-medium">IT:</span> Data Analyst – integrates weather data</li>
+                    <li><span class="font-medium">Cross-functional:</span> Safety SME – validates weather-related risks</li>
+                  </ul>
+                  <div class="mt-1 text-xs text-gray-500">Scale: Can this logic be reused for other sites? Will it handle 10× more data?</div>
+                </div>
+                <!-- Design Intent Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🎯</span> Design Intent</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Provide weather forecast for operational planning</li>
+                    <li>Requires: Weather API integration</li>
+                    <li class="text-xs text-gray-500">Prompt: Could this be parameterized for other weather types?</li>
+                  </ul>
+                </div>
+                <!-- AI Impact Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🧠</span> AI Impact</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li class="text-green-600">+ Improves planning accuracy</li>
+                    <li class="text-red-600">– Risk: Over-reliance on forecast data</li>
+                    <li class="text-xs text-gray-500">Nudge: Show confidence, allow user override</li>
+                  </ul>
+                </div>
+                <!-- Implementation Helper Tooltip -->
+                <div>
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🛠️</span> Implementation Helper</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Is this duplicating an existing dashboard?</li>
+                    <li>Can this logic be handled by a low-code tool?</li>
+                    <li>Will this still make sense in 6 months?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <h2 class="text-xl font-bold mb-3">Weather Forecast</h2>
             <div class="flex items-center mb-3">
               <span class="text-4xl mr-3">☀️</span>
@@ -288,7 +423,52 @@
           </div>
 
           <!-- Team Status Panel with Visual Representation -->
-          <div class="panel bg-gradient-to-r from-purple-400 to-indigo-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+          <div class="panel bg-gradient-to-r from-purple-400 to-indigo-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 relative">
+            <!-- Tooltip Icon and Panel -->
+            <div class="absolute top-2 right-2 group z-20">
+              <button class="focus:outline-none" aria-label="Show component tooltips">
+                <span class="text-lg">👥</span>
+              </button>
+              <div class="z-50 absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg p-4 text-left text-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 text-gray-900">
+                <!-- Task + Persona Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">👥</span> Task + Persona</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li><span class="font-medium">OT:</span> Operations Supervisor – monitors team status</li>
+                    <li><span class="font-medium">IT:</span> Data Analyst – integrates personnel data</li>
+                    <li><span class="font-medium">Cross-functional:</span> HR – validates team roles</li>
+                  </ul>
+                  <div class="mt-1 text-xs text-gray-500">Scale: Can this logic be reused for other sites? Will it handle 10× more data?</div>
+                </div>
+                <!-- Design Intent Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🎯</span> Design Intent</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Provide real-time team status for operational planning</li>
+                    <li>Requires: Personnel tracking system</li>
+                    <li class="text-xs text-gray-500">Prompt: Could this be parameterized for other team types?</li>
+                  </ul>
+                </div>
+                <!-- AI Impact Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🧠</span> AI Impact</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li class="text-green-600">+ Improves team coordination</li>
+                    <li class="text-red-600">– Risk: Over-reliance on automated data</li>
+                    <li class="text-xs text-gray-500">Nudge: Show confidence, allow user override</li>
+                  </ul>
+                </div>
+                <!-- Implementation Helper Tooltip -->
+                <div>
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🛠️</span> Implementation Helper</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Is this duplicating an existing dashboard?</li>
+                    <li>Can this logic be handled by a low-code tool?</li>
+                    <li>Will this still make sense in 6 months?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <h2 class="text-xl font-bold mb-3">Team Status</h2>
             <div class="flex flex-col space-y-2">
               <div class="flex items-center justify-between bg-purple-600 bg-opacity-30 p-2 rounded">
@@ -330,7 +510,52 @@
           </div>
 
           <!-- Quick Actions Panel with More Options -->
-          <div class="panel bg-gradient-to-r from-teal-400 to-cyan-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+          <div class="panel bg-gradient-to-r from-teal-400 to-cyan-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 relative">
+            <!-- Tooltip Icon and Panel -->
+            <div class="absolute top-2 right-2 group z-20">
+              <button class="focus:outline-none" aria-label="Show component tooltips">
+                <span class="text-lg">👥</span>
+              </button>
+              <div class="z-50 absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg p-4 text-left text-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 text-gray-900">
+                <!-- Task + Persona Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">👥</span> Task + Persona</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li><span class="font-medium">OT:</span> Operations Supervisor – initiates quick actions</li>
+                    <li><span class="font-medium">IT:</span> Data Analyst – monitors action impact</li>
+                    <li><span class="font-medium">Cross-functional:</span> Safety SME – validates action criteria</li>
+                  </ul>
+                  <div class="mt-1 text-xs text-gray-500">Scale: Can this logic be reused for other actions? Will it handle 10× more data?</div>
+                </div>
+                <!-- Design Intent Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🎯</span> Design Intent</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Provide quick access to critical actions</li>
+                    <li>Requires: Action API integration</li>
+                    <li class="text-xs text-gray-500">Prompt: Could this be parameterized for other action types?</li>
+                  </ul>
+                </div>
+                <!-- AI Impact Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🧠</span> AI Impact</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li class="text-green-600">+ Improves response time</li>
+                    <li class="text-red-600">– Risk: Over-reliance on automated actions</li>
+                    <li class="text-xs text-gray-500">Nudge: Show confidence, allow user override</li>
+                  </ul>
+                </div>
+                <!-- Implementation Helper Tooltip -->
+                <div>
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🛠️</span> Implementation Helper</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Is this duplicating an existing dashboard?</li>
+                    <li>Can this logic be handled by a low-code tool?</li>
+                    <li>Will this still make sense in 6 months?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <h2 class="text-xl font-bold mb-3">Quick Actions</h2>
             
             <div class="grid grid-cols-2 gap-3">
@@ -366,7 +591,52 @@
           </div>
 
           <!-- Enhanced Site Map Panel with Markers and Legend -->
-          <div class="panel bg-gradient-to-r from-gray-400 to-gray-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+          <div class="panel bg-gradient-to-r from-gray-400 to-gray-500 text-white p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 relative">
+            <!-- Tooltip Icon and Panel -->
+            <div class="absolute top-2 right-2 group z-20">
+              <button class="focus:outline-none" aria-label="Show component tooltips">
+                <span class="text-lg">👥</span>
+              </button>
+              <div class="z-50 absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded shadow-lg p-4 text-left text-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 text-gray-900">
+                <!-- Task + Persona Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">👥</span> Task + Persona</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li><span class="font-medium">OT:</span> Operations Supervisor – monitors site map</li>
+                    <li><span class="font-medium">IT:</span> Data Analyst – integrates map data</li>
+                    <li><span class="font-medium">Cross-functional:</span> Safety SME – validates map markers</li>
+                  </ul>
+                  <div class="mt-1 text-xs text-gray-500">Scale: Can this logic be reused for other sites? Will it handle 10× more data?</div>
+                </div>
+                <!-- Design Intent Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🎯</span> Design Intent</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Provide interactive site map for operational planning</li>
+                    <li>Requires: Map API integration</li>
+                    <li class="text-xs text-gray-500">Prompt: Could this be parameterized for other map types?</li>
+                  </ul>
+                </div>
+                <!-- AI Impact Tooltip -->
+                <div class="mb-3">
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🧠</span> AI Impact</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li class="text-green-600">+ Improves situational awareness</li>
+                    <li class="text-red-600">– Risk: Over-reliance on automated data</li>
+                    <li class="text-xs text-gray-500">Nudge: Show confidence, allow user override</li>
+                  </ul>
+                </div>
+                <!-- Implementation Helper Tooltip -->
+                <div>
+                  <div class="font-semibold flex items-center mb-1"><span class="mr-1">🛠️</span> Implementation Helper</div>
+                  <ul class="list-disc list-inside ml-2">
+                    <li>Is this duplicating an existing dashboard?</li>
+                    <li>Can this logic be handled by a low-code tool?</li>
+                    <li>Will this still make sense in 6 months?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <h2 class="text-xl font-bold mb-3">Site Map</h2>
             <div class="relative w-full h-64">
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835434509374!2d-122.419415484681!3d37.77492977975971!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064f0e0b1b1%3A0x4a0b1b1b1b1b1b1b!2sSafety%20Site!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" title="Interactive site map showing hazardous zones, emergency exits and site entrances" class="w-full h-full border-0 rounded-lg" allowfullscreen=""></iframe>
