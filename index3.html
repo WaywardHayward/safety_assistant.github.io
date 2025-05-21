@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packing Line Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Ensure dropdowns work with click events in addition to hover
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize interactive elements
+      console.log('Dashboard initialized');
+    });
+  </script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+  <!-- Layout: Root grid for full viewport -->
+  <div class="min-h-screen w-full grid grid-rows-[auto_1fr_auto] p-6 lg:p-8 gap-6">
+    <!-- Header/Navbar -->
+    <header class="flex items-center justify-between border-b border-gray-800 pb-4">
+      <div class="flex items-center gap-4">
+        <span class="text-2xl font-semibold tracking-tight">Packing Line Dashboard</span>
+        <!-- Info Icon: App personas/tasks -->
+        <button aria-label="Component Info" class="relative group">
+          <svg class="w-5 h-5 text-blue-400 hover:text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+          <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-sm shadow-lg border border-gray-700 p-4 hidden group-hover:block">
+            <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+            <ul class="list-disc pl-5 space-y-1">
+              <li><span class="font-medium">Software Engineering:</span> UI, backend, telemetry integration</li>
+              <li><span class="font-medium">User Acceptance Testing:</span> Workflow validation</li>
+              <li><span class="font-medium">Project Management:</span> Requirements, delivery</li>
+              <li><span class="font-medium">Data Science:</span> ML model management</li>
+              <li><span class="font-medium">SMEs:</span> Line process, safety, compliance</li>
+            </ul>
+          </div>
+        </button>
+        <!-- AI Impact Icon -->
+        <button aria-label="AI Impact" class="relative group">
+          <svg class="w-5 h-5 text-green-400 hover:text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+          <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-sm shadow-lg border border-gray-700 p-4 hidden group-hover:block">
+            <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+            <ul class="mb-2">
+              <li class="text-green-400">+ Predictive maintenance reduces downtime (Operators, Engineers)</li>
+              <li class="text-green-400">+ Anomaly detection improves safety (All)</li>
+              <li class="text-red-400">- Overreliance may reduce vigilance (Operators)</li>
+              <li class="text-red-400">- Model drift risk (Data Science, Engineers)</li>
+            </ul>
+          </div>
+        </button>
+        <!-- Design Intent Icon -->
+        <button aria-label="Design Intent" class="relative group">
+          <svg class="w-5 h-5 text-yellow-400 hover:text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M12 4v2m0 0a8 8 0 1 1 0 16a8 8 0 0 1 0-16z"/></svg>
+          <div class="absolute left-1/2 top-full z-10 mt-2 w-72 -translate-x-1/2 rounded bg-gray-900 text-sm shadow-lg border border-gray-700 p-4 hidden group-hover:block">
+            <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+            <div>Show real-time and historical packing line state, event logs, telemetry replay, alert response, and ML model management. Data: OPC tags, event logs, ML model metadata, alert status.</div>
+          </div>
+        </button>
+      </div>
+      <!-- User Profile Dropdown -->
+      <div class="relative group">
+        <button class="flex items-center focus:outline-none">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="w-9 h-9 rounded-full border-2 border-gray-700" />
+        </button>
+        <div class="absolute right-0 mt-2 w-48 bg-gray-900 border border-gray-700 rounded shadow-lg py-2 hidden group-hover:block z-20">
+          <a href="#" class="block px-4 py-2 text-gray-200 hover:bg-gray-800">Account Settings</a>
+          <a href="#" class="block px-4 py-2 text-gray-200 hover:bg-gray-800">Admin Panel</a>
+          <a href="#" class="block px-4 py-2 text-red-400 hover:bg-gray-800">Log Out</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <!-- Packing Line State Panel -->
+      <section class="col-span-2 bg-gray-900 rounded-lg p-6 flex flex-col gap-4 shadow-lg min-h-[350px]">
+        <div class="flex items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold">Current Packing Line State</h2>
+          <!-- Info/AI/Intent icons for this component -->
+          <button aria-label="Component Info" title="Component Info" class="relative group">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Operator: Monitor status, respond to issues</li>
+                <li>Engineer: Maintain sensors, troubleshoot</li>
+                <li>Data Science: Analyze process data</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="AI Impact" title="AI Impact" class="relative group">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+              <ul>
+                <li class="text-green-400">+ Early fault detection</li>
+                <li class="text-red-400">- False positives may distract</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="Design Intent" title="Design Intent" class="relative group">
+            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M12 4v2m0 0a8 8 0 1 1 0 16a8 8 0 0 1 0-16z"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+              <div>Show real-time status, bottlenecks, and key metrics. Data: OPC tags, sensor values, alarms.</div>
+            </div>
+          </button>
+        </div>
+        <!-- Interactive SVG Process Flow -->
+        <div class="flex-1 flex justify-center items-center min-h-[200px]">
+          <svg class="w-full h-60 max-w-2xl" viewBox="0 0 600 200" fill="none" id="processFlow">
+            <!-- Machine stations with interactive elements -->
+            <g class="machine-station" data-machine="Depalletizer">
+              <rect x="20" y="80" width="100" height="40" rx="8" fill="#4a6fa5" class="machine-rect" data-status="normal"/>
+              <text x="70" y="105" text-anchor="middle" fill="#fff" font-size="16">Depalletizer</text>
+              <!-- Status indicator -->
+              <circle cx="110" cy="85" r="5" fill="#22c55e" class="status-indicator"/>
+            </g>
+            
+            <g class="machine-station" data-machine="Filler">
+              <rect x="140" y="80" width="100" height="40" rx="8" fill="#4f6d66" class="machine-rect" data-status="normal"/>
+              <text x="190" y="105" text-anchor="middle" fill="#fff" font-size="16">Filler</text>
+              <!-- Status indicator - yellow for warning -->
+              <circle cx="230" cy="85" r="5" fill="#eab308" class="status-indicator"/>
+            </g>
+            
+            <g class="machine-station" data-machine="Capper">
+              <rect x="260" y="80" width="100" height="40" rx="8" fill="#4a6fa5" class="machine-rect" data-status="normal"/>
+              <text x="310" y="105" text-anchor="middle" fill="#fff" font-size="16">Capper</text>
+              <!-- Status indicator - red for fault -->
+              <circle cx="350" cy="85" r="5" fill="#ef4444" class="status-indicator"/>
+            </g>
+            
+            <g class="machine-station" data-machine="Labeller">
+              <rect x="380" y="80" width="100" height="40" rx="8" fill="#4f6d66" class="machine-rect" data-status="normal"/>
+              <text x="430" y="105" text-anchor="middle" fill="#fff" font-size="16">Labeller</text>
+              <!-- Status indicator -->
+              <circle cx="470" cy="85" r="5" fill="#22c55e" class="status-indicator"/>
+            </g>
+            
+            <g class="machine-station" data-machine="Packer">
+              <rect x="500" y="80" width="80" height="40" rx="8" fill="#4a6fa5" class="machine-rect" data-status="normal"/>
+              <text x="540" y="105" text-anchor="middle" fill="#fff" font-size="16">Packer</text>
+              <!-- Status indicator -->
+              <circle cx="570" cy="85" r="5" fill="#22c55e" class="status-indicator"/>
+            </g>
+            
+            <!-- Arrows -->
+            <path d="M120 100h20" stroke="#fff" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M240 100h20" stroke="#fff" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M360 100h20" stroke="#fff" stroke-width="2" marker-end="url(#arrow)"/>
+            <path d="M480 100h20" stroke="#fff" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <!-- Status indicators for the flow -->
+            <circle cx="130" cy="100" r="3" fill="#22c55e" class="flow-indicator"/>
+            <circle cx="250" cy="100" r="3" fill="#22c55e" class="flow-indicator"/>
+            <circle cx="370" cy="100" r="3" fill="#ef4444" class="flow-indicator"/>
+            <circle cx="490" cy="100" r="3" fill="#22c55e" class="flow-indicator"/>
+            
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L8,4 L0,8 L2,4 z" fill="#fff" />
+              </marker>
+            </defs>
+          </svg>
+        </div>
+        
+        <!-- Machine Detail Modal (hidden by default) -->
+        <div id="machineDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div class="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold" id="machineDetailTitle">Machine Detail</h3>
+              <button id="closeMachineDetail" class="text-gray-400 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+            <div id="machineDetailContent" class="space-y-4">
+              <!-- Will be filled by JavaScript -->
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button id="closeMachineDetailBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm">Close</button>
+            </div>
+          </div>
+        </div>
+        <!-- Key Metrics Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-gray-800 rounded p-4 flex flex-col items-center">
+            <span class="text-lg font-semibold">1,200</span>
+            <span class="text-xs text-gray-400">Bottles/hr</span>
+          </div>
+          <div class="bg-gray-800 rounded p-4 flex flex-col items-center">
+            <span class="text-lg font-semibold">98.7%</span>
+            <span class="text-xs text-gray-400">Uptime</span>
+          </div>
+          <div class="bg-gray-800 rounded p-4 flex flex-col items-center">
+            <span class="text-lg font-semibold">2</span>
+            <span class="text-xs text-gray-400">Active Alerts</span>
+          </div>
+          <div class="bg-gray-800 rounded p-4 flex flex-col items-center">
+            <span class="text-lg font-semibold">0.3%</span>
+            <span class="text-xs text-gray-400">Reject Rate</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Event Log Panel -->
+      <section class="bg-gray-900 rounded-lg p-6 flex flex-col gap-4 shadow-lg min-h-[350px]">
+        <div class="flex items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold">Event Log</h2>
+          <!-- Info/AI/Intent icons for this component -->
+          <button aria-label="Component Info" class="relative group">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Operator: Review events, annotate issues</li>
+                <li>Engineer: Investigate faults</li>
+                <li>Project Manager: Track downtime</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="AI Impact" class="relative group">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+              <ul>
+                <li class="text-green-400">+ Event clustering for root cause</li>
+                <li class="text-red-400">- Missed context in logs</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="Design Intent" class="relative group">
+            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M12 4v2m0 0a8 8 0 1 1 0 16a8 8 0 0 1 0-16z"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+              <div>Show timestamped events, filter/search, annotate. Data: event logs, operator notes.</div>
+            </div>
+          </button>
+        </div>
+        <!-- Event Log Controls -->
+        <div class="flex flex-col sm:flex-row gap-2 mb-3">
+          <div class="flex-1">
+            <input type="text" placeholder="Search events..." class="w-full px-3 py-1 bg-gray-800 border border-gray-700 rounded text-sm text-gray-100" id="eventSearchInput" aria-label="Search events">
+          </div>
+          <div class="flex gap-2">
+            <select class="px-3 py-1 bg-gray-800 border border-gray-700 rounded text-sm text-gray-100" aria-label="Filter events" title="Filter events">
+              <option value="">All Events</option>
+              <option value="start">Line Start</option>
+              <option value="fault">Faults</option>
+              <option value="jam">Jams</option>
+            </select>
+            <button class="px-4 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs text-white" aria-label="Add Note">
+              Add Note
+            </button>
+          </div>
+        </div>
+        <!-- Event Log Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs text-left">
+            <thead>
+              <tr class="text-gray-400 border-b border-gray-800">
+                <th class="py-2 px-3">Time</th>
+                <th class="py-2 px-3">Event</th>
+                <th class="py-2 px-3">Operator</th>
+                <th class="py-2 px-3">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="eventLogTableBody">
+              <tr class="border-b border-gray-800 hover:bg-gray-800 cursor-pointer event-log-row">
+                <td class="py-2 px-3">08:12</td>
+                <td class="py-2 px-3">Line Start</td>
+                <td class="py-2 px-3">J. Smith</td>
+                <td class="py-2 px-3">-</td>
+              </tr>
+              <tr class="border-b border-gray-800 hover:bg-gray-800 cursor-pointer event-log-row">
+                <td class="py-2 px-3">08:45</td>
+                <td class="py-2 px-3">Bottle Jam</td>
+                <td class="py-2 px-3">A. Lee</td>
+                <td class="py-2 px-3">Cleared in 2 min</td>
+              </tr>
+              <tr class="border-b border-gray-800 hover:bg-gray-800 cursor-pointer event-log-row">
+                <td class="py-2 px-3">09:10</td>
+                <td class="py-2 px-3">Capper Fault</td>
+                <td class="py-2 px-3">J. Smith</td>
+                <td class="py-2 px-3">Engineer called</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Event Log Detail Modal (hidden by default) -->
+        <div id="eventDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div class="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold" id="eventDetailTitle">Event Detail</h3>
+              <button id="closeEventDetail" class="text-gray-400 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+            <div id="eventDetailContent" class="space-y-3">
+              <!-- Will be filled by JavaScript -->
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button id="closeEventDetailBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm">Close</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Telemetry Replay Panel -->
+      <section class="col-span-2 bg-gray-900 rounded-lg p-6 flex flex-col gap-4 shadow-lg min-h-[250px]">
+        <div class="flex items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold">Telemetry Replay</h2>
+          <!-- Info/AI/Intent icons for this component -->
+          <button aria-label="Component Info" class="relative group">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Operator: Review past telemetry</li>
+                <li>Engineer: Diagnose issues</li>
+                <li>Data Science: Analyze trends</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="AI Impact" class="relative group">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+              <ul>
+                <li class="text-green-400">+ Pattern recognition for root cause</li>
+                <li class="text-red-400">- Replay may miss context</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="Design Intent" class="relative group">
+            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M12 4v2m0 0a8 8 0 1 1 0 16a8 8 0 0 1 0-16z"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+              <div>Allow users to select a time range and replay telemetry. Data: sensor values, event markers.</div>
+            </div>
+          </button>
+        </div>
+        <!-- Telemetry Replay Controls -->
+        <div class="flex flex-col md:flex-row gap-4 items-center">
+          <label class="flex flex-col text-xs text-gray-400" for="startTimeInput">
+            Start Time
+            <input id="startTimeInput" type="datetime-local" class="mt-1 rounded bg-gray-800 border border-gray-700 text-gray-100 px-2 py-1" aria-label="Start time for replay" />
+          </label>
+          <label class="flex flex-col text-xs text-gray-400" for="endTimeInput">
+            End Time
+            <input id="endTimeInput" type="datetime-local" class="mt-1 rounded bg-gray-800 border border-gray-700 text-gray-100 px-2 py-1" aria-label="End time for replay" />
+          </label>
+          <button class="mt-4 md:mt-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-semibold shadow focus:outline-2 focus:outline-blue-400" aria-label="Start replay" title="Start replay">Replay</button>
+        </div>
+        <!-- Telemetry Chart Placeholder -->
+        <div class="flex-1 flex items-center justify-center min-h-[120px]">
+          <canvas id="telemetryChart" class="w-full h-32 bg-gray-800 rounded"></canvas>
+        </div>
+        <script>
+          // Simple placeholder chart rendering (will be replaced with actual data)
+          document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('telemetryChart').getContext('2d');
+            // Draw a simple line to show the chart is working
+            ctx.beginPath();
+            ctx.moveTo(10, 45);
+            ctx.lineTo(30, 20);
+            ctx.lineTo(50, 35);
+            ctx.lineTo(70, 15);
+            ctx.lineTo(90, 30);
+            ctx.lineTo(110, 25);
+            ctx.lineTo(130, 40);
+            ctx.strokeStyle = '#60a5fa';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          });
+        </script>
+      </section>
+
+      <!-- Alerts Panel -->
+      <section class="bg-gray-900 rounded-lg p-6 flex flex-col gap-4 shadow-lg min-h-[250px]">
+        <div class="flex items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold">Machine Alerts</h2>
+          <!-- Info/AI/Intent icons for this component -->
+          <button aria-label="Component Info" class="relative group">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Operator: Respond to alerts</li>
+                <li>Engineer: Investigate root cause</li>
+                <li>Project Manager: Track alert frequency</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="AI Impact" class="relative group">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+              <ul>
+                <li class="text-green-400">+ Alert prioritization</li>
+                <li class="text-red-400">- Missed edge cases</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="Design Intent" class="relative group">
+            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M12 4v2m0 0a8 8 0 1 1 0 16a8 8 0 0 1 0-16z"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+              <div>Show active alerts, allow acknowledge/resolve. Data: alert status, timestamps, operator actions.</div>
+            </div>
+          </button>
+        </div>
+        <!-- Alerts Table (placeholder) -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs text-left">
+            <thead>
+              <tr class="text-gray-400 border-b border-gray-800">
+                <th class="py-2 px-3">Time</th>
+                <th class="py-2 px-3">Machine</th>
+                <th class="py-2 px-3">Alert</th>
+                <th class="py-2 px-3">Status</th>
+                <th class="py-2 px-3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-800 hover:bg-gray-800">
+                <td class="py-2 px-3">09:10</td>
+                <td class="py-2 px-3">Capper</td>
+                <td class="py-2 px-3">Fault Detected</td>
+                <td class="py-2 px-3 text-red-400 alert-status">Active</td>
+                <td class="py-2 px-3">
+                  <button class="px-2 py-1 bg-green-700 hover:bg-green-800 rounded text-xs text-white alert-action" data-action="acknowledge">Acknowledge</button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-800 hover:bg-gray-800">
+                <td class="py-2 px-3">08:45</td>
+                <td class="py-2 px-3">Filler</td>
+                <td class="py-2 px-3">Low Pressure</td>
+                <td class="py-2 px-3 text-yellow-400 alert-status">Acknowledged</td>
+                <td class="py-2 px-3">
+                  <button class="px-2 py-1 bg-blue-700 hover:bg-blue-800 rounded text-xs text-white alert-action" data-action="resolve">Resolve</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ML Model Management Panel -->
+      <section class="col-span-2 bg-gray-900 rounded-lg p-6 flex flex-col gap-4 shadow-lg min-h-[250px]">
+        <div class="flex items-center gap-2 mb-2">
+          <h2 class="text-xl font-semibold">ML Model Management</h2>
+          <!-- Info/AI/Intent icons for this component -->
+          <button aria-label="Component Info" class="relative group">
+            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Data Science: Train, deploy, monitor models</li>
+                <li>Engineer: Integrate models</li>
+                <li>Operator: Use model outputs</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="AI Impact" class="relative group">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+              <ul>
+                <li class="text-green-400">+ Improved accuracy</li>
+                <li class="text-red-400">- Model drift risk</li>
+              </ul>
+            </div>
+          </button>
+          <button aria-label="Design Intent" class="relative group">
+            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M12 4v2m0 0a8 8 0 1 1 0 16a8 8 0 0 1 0-16z"/></svg>
+            <div class="absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 hidden group-hover:block">
+              <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+              <div>List models, show status, allow deploy/rollback. Data: model metadata, deployment status, performance metrics.</div>
+            </div>
+          </button>
+        </div>
+        <!-- ML Model Table (placeholder) -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs text-left">
+            <thead>
+              <tr class="text-gray-400 border-b border-gray-800">
+                <th class="py-2 px-3">Model</th>
+                <th class="py-2 px-3">Version</th>
+                <th class="py-2 px-3">Status</th>
+                <th class="py-2 px-3">Performance</th>
+                <th class="py-2 px-3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-800 hover:bg-gray-800">
+                <td class="py-2 px-3">Anomaly Detector</td>
+                <td class="py-2 px-3">v1.2</td>
+                <td class="py-2 px-3 text-green-400 model-status">Active</td>
+                <td class="py-2 px-3">98.2% accuracy</td>
+                <td class="py-2 px-3">
+                  <button class="px-2 py-1 bg-blue-700 hover:bg-blue-800 rounded text-xs text-white model-action" data-action="rollback">Rollback</button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-800 hover:bg-gray-800">
+                <td class="py-2 px-3">Predictive Maintenance</td>
+                <td class="py-2 px-3">v2.0</td>
+                <td class="py-2 px-3 text-yellow-400 model-status">Testing</td>
+                <td class="py-2 px-3">95.7% accuracy</td>
+                <td class="py-2 px-3">
+                  <button class="px-2 py-1 bg-green-700 hover:bg-green-800 rounded text-xs text-white model-action" data-action="deploy">Deploy</button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-800 hover:bg-gray-800 hidden" id="newModelRow">
+                <td class="py-2 px-3">Bottle Cap Quality</td>
+                <td class="py-2 px-3">v1.0</td>
+                <td class="py-2 px-3 text-gray-400 model-status">Inactive</td>
+                <td class="py-2 px-3">99.1% accuracy</td>
+                <td class="py-2 px-3">
+                  <button class="px-2 py-1 bg-green-700 hover:bg-green-800 rounded text-xs text-white model-action" data-action="deploy">Deploy</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-xs text-gray-500 text-center py-4 border-t border-gray-800">
+      &copy; 2025 Bottling Plant Packing Line UI. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Initialize alert buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add event listeners for alert action buttons
+      const alertButtons = document.querySelectorAll('.alert-action');
+      alertButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const action = this.getAttribute('data-action');
+          const row = this.closest('tr');
+          const statusCell = row.querySelector('.alert-status');
+          
+          if (action === 'acknowledge') {
+            statusCell.textContent = 'Acknowledged';
+            statusCell.className = 'py-2 px-3 text-yellow-400 alert-status';
+            this.textContent = 'Resolve';
+            this.className = 'px-2 py-1 bg-blue-700 hover:bg-blue-800 rounded text-xs text-white alert-action';
+            this.setAttribute('data-action', 'resolve');
+          } else if (action === 'resolve') {
+            row.style.opacity = '0.5';
+            statusCell.textContent = 'Resolved';
+            statusCell.className = 'py-2 px-3 text-green-400 alert-status';
+            this.textContent = 'Resolved';
+            this.className = 'px-2 py-1 bg-gray-700 rounded text-xs text-gray-300 alert-action';
+            this.disabled = true;
+          }
+        });
+      });
+      
+      // ML Model Management Actions
+      const modelButtons = document.querySelectorAll('.model-action');
+      modelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const action = this.getAttribute('data-action');
+          const row = this.closest('tr');
+          const statusCell = row.querySelector('.model-status');
+          
+          if (action === 'deploy') {
+            if (confirm('Are you sure you want to deploy this model to production?')) {
+              statusCell.textContent = 'Deploying...';
+              statusCell.className = 'py-2 px-3 text-blue-400 model-status';
+              
+              // Simulate deployment delay
+              setTimeout(() => {
+                statusCell.textContent = 'Active';
+                statusCell.className = 'py-2 px-3 text-green-400 model-status';
+                this.textContent = 'Rollback';
+                this.className = 'px-2 py-1 bg-blue-700 hover:bg-blue-800 rounded text-xs text-white model-action';
+                this.setAttribute('data-action', 'rollback');
+                
+                // Show the hidden model row when deploying a model
+                document.getElementById('newModelRow').classList.remove('hidden');
+              }, 1500);
+            }
+          } else if (action === 'rollback') {
+            if (confirm('Are you sure you want to rollback this model?')) {
+              statusCell.textContent = 'Rolling back...';
+              statusCell.className = 'py-2 px-3 text-orange-400 model-status';
+              
+              // Simulate rollback delay
+              setTimeout(() => {
+                statusCell.textContent = 'Inactive';
+                statusCell.className = 'py-2 px-3 text-gray-400 model-status';
+                this.textContent = 'Deploy';
+                this.className = 'px-2 py-1 bg-green-700 hover:bg-green-800 rounded text-xs text-white model-action';
+                this.setAttribute('data-action', 'deploy');
+              }, 1500);
+            }
+          }
+        });
+      });
+
+      // Initialize replay button
+      const replayButton = document.querySelector('button.bg-blue-600');
+      if (replayButton) {
+        replayButton.addEventListener('click', function() {
+          alert('Telemetry replay initiated. In a real application, this would fetch and display historical data.');
+          
+          // Simple animation to show the replay working
+          const canvas = document.getElementById('telemetryChart');
+          if (canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw a new line
+            ctx.beginPath();
+            ctx.moveTo(10, 30);
+            ctx.lineTo(30, 40);
+            ctx.lineTo(50, 25);
+            ctx.lineTo(70, 45);
+            ctx.lineTo(90, 20);
+            ctx.lineTo(110, 35);
+            ctx.lineTo(130, 25);
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+        });
+      }
+
+      // Make the tooltips/dropdowns work with clicks for touch devices
+      const tooltipButtons = document.querySelectorAll('.group > button');
+      tooltipButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const tooltip = this.nextElementSibling;
+          
+          // Close all other tooltips
+          document.querySelectorAll('.group > div').forEach(tip => {
+            if (tip !== tooltip) {
+              tip.classList.add('hidden');
+            }
+          });
+          
+          // Toggle this tooltip
+          tooltip.classList.toggle('hidden');
+        });
+      });
+
+      // Close tooltips when clicking elsewhere
+      document.addEventListener('click', function() {
+        document.querySelectorAll('.group > div').forEach(tooltip => {
+          tooltip.classList.add('hidden');
+        });
+      });
+
+      // Event Log functionality
+      const eventRows = document.querySelectorAll('.event-log-row');
+      const eventDetailModal = document.getElementById('eventDetailModal');
+      const eventDetailTitle = document.getElementById('eventDetailTitle');
+      const eventDetailContent = document.getElementById('eventDetailContent');
+      const closeEventDetail = document.getElementById('closeEventDetail');
+      const closeEventDetailBtn = document.getElementById('closeEventDetailBtn');
+      
+      // Set up search functionality
+      const eventSearchInput = document.getElementById('eventSearchInput');
+      if (eventSearchInput) {
+        eventSearchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase();
+          
+          eventRows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            if (searchTerm === '' || rowText.includes(searchTerm)) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        });
+      }
+      
+      // Set up event detail modal
+      eventRows.forEach(row => {
+        row.addEventListener('click', function() {
+          const time = this.querySelector('td:nth-child(1)').textContent;
+          const event = this.querySelector('td:nth-child(2)').textContent;
+          const operator = this.querySelector('td:nth-child(3)').textContent;
+          const notes = this.querySelector('td:nth-child(4)').textContent;
+          
+          eventDetailTitle.textContent = event + ' at ' + time;
+          
+          // Create detail content
+          eventDetailContent.innerHTML = `
+            <div>
+              <p class="text-gray-400 text-sm">Time</p>
+              <p>${time}</p>
+            </div>
+            <div>
+              <p class="text-gray-400 text-sm">Operator</p>
+              <p>${operator}</p>
+            </div>
+            <div>
+              <p class="text-gray-400 text-sm">Notes</p>
+              <p>${notes === '-' ? 'No notes available' : notes}</p>
+            </div>
+            <div class="mt-3">
+              <label class="block text-gray-400 text-sm mb-1">Add/Edit Notes</label>
+              <textarea class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-gray-100 min-h-[80px]">${notes === '-' ? '' : notes}</textarea>
+            </div>
+          `;
+          
+          eventDetailModal.classList.remove('hidden');
+        });
+      });
+      
+      // Close modal functionality
+      if (closeEventDetail) {
+        closeEventDetail.addEventListener('click', function() {
+          eventDetailModal.classList.add('hidden');
+        });
+      }
+      
+      if (closeEventDetailBtn) {
+        closeEventDetailBtn.addEventListener('click', function() {
+          eventDetailModal.classList.add('hidden');
+        });
+      }
+      
+      // Close modal when clicking outside
+      eventDetailModal?.addEventListener('click', function(e) {
+        if (e.target === eventDetailModal) {
+          eventDetailModal.classList.add('hidden');
+        }
+      });
+
+      // Process Flow Chart Interactivity
+      const machineStations = document.querySelectorAll('.machine-station');
+      const machineDetailModal = document.getElementById('machineDetailModal');
+      const machineDetailTitle = document.getElementById('machineDetailTitle');
+      const machineDetailContent = document.getElementById('machineDetailContent');
+      const closeMachineDetail = document.getElementById('closeMachineDetail');
+      const closeMachineDetailBtn = document.getElementById('closeMachineDetailBtn');
+      
+      // Machine data (would come from backend in real app)
+      const machineData = {
+        'Depalletizer': {
+          status: 'normal',
+          speed: '100%',
+          lastMaintenance: '2025-05-01',
+          nextMaintenance: '2025-06-01',
+          metrics: {
+            'Uptime': '99.7%',
+            'Efficiency': '98.2%',
+            'Fault Rate': '0.1%'
+          }
+        },
+        'Filler': {
+          status: 'warning',
+          speed: '92%',
+          lastMaintenance: '2025-04-15',
+          nextMaintenance: '2025-05-15',
+          metrics: {
+            'Uptime': '97.3%',
+            'Efficiency': '91.8%',
+            'Fault Rate': '0.8%',
+            'Warning': 'Low pressure detected'
+          }
+        },
+        'Capper': {
+          status: 'fault',
+          speed: '0%',
+          lastMaintenance: '2025-05-05',
+          nextMaintenance: '2025-06-05',
+          metrics: {
+            'Uptime': '85.4%',
+            'Efficiency': '0%',
+            'Fault Rate': '5.2%',
+            'Critical Alert': 'Torque sensor failure'
+          }
+        },
+        'Labeller': {
+          status: 'normal',
+          speed: '100%',
+          lastMaintenance: '2025-03-20',
+          nextMaintenance: '2025-06-20',
+          metrics: {
+            'Uptime': '99.1%',
+            'Efficiency': '97.5%',
+            'Fault Rate': '0.3%'
+          }
+        },
+        'Packer': {
+          status: 'normal',
+          speed: '100%',
+          lastMaintenance: '2025-04-10',
+          nextMaintenance: '2025-07-10',
+          metrics: {
+            'Uptime': '99.8%',
+            'Efficiency': '99.2%',
+            'Fault Rate': '0.1%'
+          }
+        }
+      };
+      
+      // Add click events to machine stations
+      machineStations.forEach(station => {
+        station.style.cursor = 'pointer';
+        station.setAttribute('role', 'button');
+        station.setAttribute('aria-label', `View ${station.getAttribute('data-machine')} details`);
+        
+        station.addEventListener('click', function() {
+          const machineName = this.getAttribute('data-machine');
+          const machine = machineData[machineName];
+          
+          if (machine) {
+            machineDetailTitle.textContent = machineName + ' Details';
+            
+            // Create status class based on machine status
+            let statusClass = 'text-green-400';
+            let statusText = 'Normal';
+            
+            if (machine.status === 'warning') {
+              statusClass = 'text-yellow-400';
+              statusText = 'Warning';
+            } else if (machine.status === 'fault') {
+              statusClass = 'text-red-400';
+              statusText = 'Fault';
+            }
+            
+            // Create detail content
+            let metricsHtml = '';
+            for (const [key, value] of Object.entries(machine.metrics)) {
+              let metricClass = '';
+              
+              // Add color to special metrics
+              if (key.includes('Warning')) {
+                metricClass = 'text-yellow-400';
+              } else if (key.includes('Critical') || key.includes('Alert')) {
+                metricClass = 'text-red-400';
+              }
+              
+              metricsHtml += `
+                <div class="flex justify-between">
+                  <span class="${metricClass}">${key}</span>
+                  <span>${value}</span>
+                </div>
+              `;
+            }
+            
+            machineDetailContent.innerHTML = `
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-400">Status:</span>
+                <span class="${statusClass} font-medium">${statusText}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-400">Current Speed:</span>
+                <span>${machine.speed}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-400">Last Maintenance:</span>
+                <span>${machine.lastMaintenance}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-400">Next Scheduled Maintenance:</span>
+                <span>${machine.nextMaintenance}</span>
+              </div>
+              
+              <div class="mt-4">
+                <h4 class="text-sm font-medium text-gray-300 mb-2">Performance Metrics</h4>
+                <div class="space-y-1 bg-gray-800 p-3 rounded">
+                  ${metricsHtml}
+                </div>
+              </div>
+              
+              <div class="mt-4 flex gap-2">
+                <button class="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded text-xs text-white">Maintenance Log</button>
+                <button class="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 rounded text-xs text-white">Reset Alerts</button>
+              </div>
+            `;
+            
+            machineDetailModal.classList.remove('hidden');
+          }
+        });
+        
+        // Highlight on hover
+        station.addEventListener('mouseenter', function() {
+          const rect = this.querySelector('.machine-rect');
+          if (rect) {
+            rect.setAttribute('stroke', '#ffffff');
+            rect.setAttribute('stroke-width', '2');
+          }
+        });
+        
+        station.addEventListener('mouseleave', function() {
+          const rect = this.querySelector('.machine-rect');
+          if (rect) {
+            rect.removeAttribute('stroke');
+            rect.removeAttribute('stroke-width');
+          }
+        });
+      });
+      
+      // Close machine detail modal functionality
+      if (closeMachineDetail) {
+        closeMachineDetail.addEventListener('click', function() {
+          machineDetailModal.classList.add('hidden');
+        });
+      }
+      
+      if (closeMachineDetailBtn) {
+        closeMachineDetailBtn.addEventListener('click', function() {
+          machineDetailModal.classList.add('hidden');
+        });
+      }
+      
+      // Close modal when clicking outside
+      machineDetailModal?.addEventListener('click', function(e) {
+        if (e.target === machineDetailModal) {
+          machineDetailModal.classList.add('hidden');
+        }
+      });
+      
+      // Set default dates for telemetry replay
+      const now = new Date();
+      const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
+      
+      const startTimeInput = document.getElementById('startTimeInput');
+      const endTimeInput = document.getElementById('endTimeInput');
+      
+      if (startTimeInput && endTimeInput) {
+        startTimeInput.value = oneHourAgo.toISOString().slice(0, 16);
+        endTimeInput.value = now.toISOString().slice(0, 16);
+      }
+    });
+  </script>
+</body>
+</html>

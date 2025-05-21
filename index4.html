@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Remote Monitoring - 360° Video Interface</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+    <!-- Storyboard & Scenario Panel Trigger -->
+    <button id="storyboard-trigger" class="fixed top-4 left-4 z-40 bg-gray-800 hover:bg-blue-700 text-white rounded-full shadow-lg w-12 h-12 flex items-center justify-center text-2xl focus:outline-none focus:ring-2 focus:ring-blue-500" title="Show Storyboard & Scenarios" aria-label="Show Storyboard & Scenarios">
+        🎬
+    </button>
+    <!-- Storyboard Modal Panel -->
+    <div id="storyboard-modal" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-start justify-center hidden" aria-modal="true" role="dialog">
+        <div class="mt-16 w-full max-w-3xl bg-gray-900 rounded-lg shadow-2xl border border-gray-700 flex flex-col overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800 bg-gray-950">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🎬</span>
+                    <span class="text-xl font-bold text-white">Storyboard & Scenarios</span>
+                </div>
+                <button id="storyboard-close" class="text-gray-400 hover:text-white text-2xl focus:outline-none" aria-label="Close Storyboard Panel">&times;</button>
+            </div>
+            <!-- Scenario Tabs -->
+            <div class="flex border-b border-gray-800 bg-gray-900">
+                <button class="story-tab px-5 py-3 text-sm font-semibold text-blue-300 border-b-2 border-blue-500 bg-gray-900 focus:outline-none" data-tab="0">Investigate Temperature Spike</button>
+                <button class="story-tab px-5 py-3 text-sm font-semibold text-gray-300 hover:text-blue-300 border-b-2 border-transparent bg-gray-900 focus:outline-none" data-tab="1">Respond to AI Alert</button>
+                <button class="story-tab px-5 py-3 text-sm font-semibold text-gray-300 hover:text-blue-300 border-b-2 border-transparent bg-gray-900 focus:outline-none" data-tab="2">Architecture</button>
+            </div>
+            <!-- Scenario Content -->
+            <div class="flex-1 overflow-y-auto bg-gray-900" id="storyboard-content">
+                <!-- Scenario 1 -->
+                <section class="story-scenario p-6" data-tab="0">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-lg font-bold text-white">Scenario:</span>
+                        <span class="text-lg text-blue-200 font-semibold">Investigate Temperature Spike</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="core/images/persona-icons/Ivan Ramirez.jpg" alt="Quality Engineer" class="w-10 h-10 rounded-full border-2 border-blue-400" title="Quality Engineer">
+                        <span class="text-sm text-gray-300">Persona: <span class="font-semibold text-white">Quality Engineer</span></span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">Goal:</span>
+                        <span class="text-base text-white">Quickly identify and resolve a temperature spike detected by the system.</span>
+                    </div>
+                    <ol class="space-y-4 mb-6">
+                        <li class="flex items-start gap-3">
+                            <img src="core/images/persona-icons/Ivan Ramirez.jpg" alt="Quality Engineer" class="w-8 h-8 rounded-full border border-blue-400 mt-1">
+                            <div>
+                                <span class="font-semibold text-white">Step 1:</span>
+                                <span class="text-gray-200">User sees a temperature alert in the sidebar and clicks it.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="core/images/persona-icons/Michelle Harris.jpg" alt="Operator" class="w-8 h-8 rounded-full border border-green-400 mt-1">
+                            <div>
+                                <span class="font-semibold text-white">Step 2:</span>
+                                <span class="text-gray-200">AI tooltip appears, showing prediction and confidence score.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="core/images/persona-icons/Gabriela Dill.jpg" alt="Supervisor" class="w-8 h-8 rounded-full border border-yellow-400 mt-1">
+                            <div>
+                                <span class="font-semibold text-white">Step 3:</span>
+                                <span class="text-gray-200">Supervisor reviews recommendation and approves corrective action.</span>
+                            </div>
+                        </li>
+                    </ol>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">AI Interactions:</span>
+                        <span class="text-base text-green-300">Model prediction, confidence score, override option</span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">Expected Outcome:</span>
+                        <span class="text-base text-white">Temperature returns to normal, event is logged for traceability.</span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">Alt Path / Failure Mode:</span>
+                        <span class="text-base text-red-300">User ignores alert → system escalates after delay.</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-6">
+                        <button class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm flex items-center gap-2" title="Try Scenario">
+                            <span>Try Scenario</span>
+                        </button>
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" title="Play Voiceover">
+                            <span>🔊</span>
+                            <span>Play Voiceover</span>
+                            <span class="ml-2 text-xs text-gray-400">🎧 1 min</span>
+                        </button>
+                    </div>
+                </section>
+                <!-- Scenario 2 -->
+                <section class="story-scenario p-6 hidden" data-tab="1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-lg font-bold text-white">Scenario:</span>
+                        <span class="text-lg text-blue-200 font-semibold">Respond to AI Alert</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="core/images/persona-icons/Gabriela Dill.jpg" alt="Operator" class="w-10 h-10 rounded-full border-2 border-green-400" title="Operator">
+                        <span class="text-sm text-gray-300">Persona: <span class="font-semibold text-white">Operator</span></span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">Goal:</span>
+                        <span class="text-base text-white">Acknowledge and investigate an AI-detected anomaly in the packaging area.</span>
+                    </div>
+                    <ol class="space-y-4 mb-6">
+                        <li class="flex items-start gap-3">
+                            <img src="core/images/persona-icons/Gabriela Dill.jpg" alt="Operator" class="w-8 h-8 rounded-full border border-green-400 mt-1">
+                            <div>
+                                <span class="font-semibold text-white">Step 1:</span>
+                                <span class="text-gray-200">Operator receives an alert and clicks 'Review' in the sidebar.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="core/images/persona-icons/Ivan Ramirez.jpg" alt="Engineer" class="w-8 h-8 rounded-full border border-blue-400 mt-1">
+                            <div>
+                                <span class="font-semibold text-white">Step 2:</span>
+                                <span class="text-gray-200">Engineer inspects video footage and validates the anomaly.</span>
+                            </div>
+                        </li>
+                    </ol>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">AI Interactions:</span>
+                        <span class="text-base text-green-300">Anomaly detection, review workflow, feedback to model</span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">Expected Outcome:</span>
+                        <span class="text-base text-white">Anomaly is confirmed or dismissed, system learns from feedback.</span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="block text-sm text-gray-400 mb-1">Alt Path / Failure Mode:</span>
+                        <span class="text-base text-red-300">Operator ignores alert → system logs event, notifies supervisor.</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-6">
+                        <button class="bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm flex items-center gap-2" title="Try Scenario">
+                            <span>Try Scenario</span>
+                        </button>
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" title="Play Voiceover">
+                            <span>🔊</span>
+                            <span>Play Voiceover</span>
+                            <span class="ml-2 text-xs text-gray-400">🎧 1 min</span>
+                        </button>
+                    </div>
+                </section>
+                <!-- Architecture Tab -->
+                <section class="story-scenario p-6 hidden" data-tab="2">
+                    <!-- Azure Architecture Panel moved into modal -->
+                    <section class="w-full bg-gray-950 border border-gray-800 px-4 py-6 flex flex-col gap-6 rounded-lg" aria-label="Azure Architecture Overview">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-xl font-bold text-white">Architecture Overview</h2>
+                                <!-- Tooltips: Architecture Panel -->
+                                <span class="flex gap-1 ml-2">
+                                    <button class="group relative" aria-label="Task & Persona">
+                                        <span class="text-base">👥</span>
+                                        <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                            <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+                                            <ul class="list-disc pl-4">
+                                                <li>Cloud Architect: Design secure, scalable solution</li>
+                                                <li>Engineer: Integrate edge and cloud systems</li>
+                                            </ul>
+                                            <div class="mt-2 text-gray-400 text-xs">Who reviews architecture changes?</div>
+                                        </div>
+                                    </button>
+                                    <button class="group relative" aria-label="Design Intent">
+                                        <span class="text-base">🎯</span>
+                                        <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                            <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+                                            <div>Show data flow from edge to cloud, highlight security and AI integration.</div>
+                                            <div class="mt-2 text-gray-400 text-xs">Is this future-proof for new AI models?</div>
+                                        </div>
+                                    </button>
+                                    <button class="group relative" aria-label="AI Impact">
+                                        <span class="text-base">🧠</span>
+                                        <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                            <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+                                            <ul>
+                                                <li class="text-green-400">+ Enables real-time AI at edge</li>
+                                                <li class="text-red-400">- Data privacy, model drift risks</li>
+                                            </ul>
+                                            <div class="mt-2 text-gray-400 text-xs">How is Responsible AI enforced?</div>
+                                        </div>
+                                    </button>
+                                    <button class="group relative" aria-label="Implementation Helper">
+                                        <span class="text-base">🛠️</span>
+                                        <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                            <div class="font-semibold mb-1 text-blue-200">Implementation Helper</div>
+                                            <ul>
+                                                <li>Are all icons official Azure?</li>
+                                                <li>Can this be exported for docs?</li>
+                                            </ul>
+                                        </div>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Diagram -->
+                        <div class="w-full flex flex-col md:flex-row items-center justify-center gap-8">
+                            <!-- Edge -->
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-sm font-semibold text-blue-300 mb-1">Edge</span>
+                                <div class="flex gap-4">
+                                    <img src="core/images/azure-icons/physical-packing-line.svg" alt="Packing Line" class="w-10 h-10" title="Packing Line">
+                                    <img src="core/images/azure-icons/physical-plc.svg" alt="PLC" class="w-10 h-10" title="PLC">
+                                    <img src="core/images/azure-icons/azure-iot-edge.svg" alt="Azure IoT Edge" class="w-10 h-10" title="Azure IoT Edge">
+                                </div>
+                                <span class="text-xs text-gray-400 mt-1">Sensor & control data</span>
+                            </div>
+                            <!-- Data Flow Arrow -->
+                            <div class="hidden md:block">
+                                <svg width="48" height="24" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 12h40m0 0l-6-6m6 6l-6 6" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <!-- Cloud -->
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-sm font-semibold text-purple-300 mb-1">Cloud</span>
+                                <div class="flex gap-4">
+                                    <img src="core/images/azure-icons/azure-iot-hub.svg" alt="IoT Hub" class="w-10 h-10" title="Azure IoT Hub">
+                                    <img src="core/images/azure-icons/azure-stream-analytics.svg" alt="Stream Analytics" class="w-10 h-10" title="Azure Stream Analytics">
+                                    <img src="core/images/azure-icons/azure-open-ai.svg" alt="Azure OpenAI" class="w-10 h-10" title="Azure OpenAI">
+                                    <img src="core/images/azure-icons/azure-sql-server.svg" alt="SQL DB" class="w-10 h-10" title="Azure SQL Database">
+                                </div>
+                                <span class="text-xs text-gray-400 mt-1">Ingestion, analytics, AI, storage</span>
+                            </div>
+                            <!-- Data Flow Arrow -->
+                            <div class="hidden md:block">
+                                <svg width="48" height="24" viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 12h40m0 0l-6-6m6 6l-6 6" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <!-- Control/Insights -->
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-sm font-semibold text-green-300 mb-1">Control & Insights</span>
+                                <div class="flex gap-4">
+                                    <img src="core/images/azure-icons/web-application-client.svg" alt="Web App" class="w-10 h-10" title="Web Application">
+                                    <img src="core/images/azure-icons/azure-app-service.svg" alt="App Service" class="w-10 h-10" title="Azure App Service">
+                                    <img src="core/images/azure-icons/azure-active-directory.svg" alt="Active Directory" class="w-10 h-10" title="Azure Active Directory">
+                                </div>
+                                <span class="text-xs text-gray-400 mt-1">Dashboards, auth, user actions</span>
+                            </div>
+                        </div>
+                        <!-- Justification Table -->
+                        <div class="overflow-x-auto mt-4">
+                            <table class="min-w-full text-xs text-left border border-gray-800 rounded-lg">
+                                <thead class="bg-gray-800 text-gray-200">
+                                    <tr>
+                                        <th class="px-3 py-2 font-semibold">Component</th>
+                                        <th class="px-3 py-2 font-semibold">Purpose</th>
+                                        <th class="px-3 py-2 font-semibold">Responsible AI</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-gray-900 divide-y divide-gray-800">
+                                    <tr>
+                                        <td class="px-3 py-2">IoT Edge</td>
+                                        <td class="px-3 py-2">Local data collection, pre-processing</td>
+                                        <td class="px-3 py-2">Privacy at source, edge filtering</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 py-2">IoT Hub</td>
+                                        <td class="px-3 py-2">Secure device-cloud bridge</td>
+                                        <td class="px-3 py-2">Encrypted transport, device auth</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 py-2">Stream Analytics</td>
+                                        <td class="px-3 py-2">Real-time event processing</td>
+                                        <td class="px-3 py-2">Bias checks, explainability</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 py-2">OpenAI</td>
+                                        <td class="px-3 py-2">Anomaly detection, insights</td>
+                                        <td class="px-3 py-2">Human-in-the-loop, audit logs</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 py-2">SQL DB</td>
+                                        <td class="px-3 py-2">Event & telemetry storage</td>
+                                        <td class="px-3 py-2">Access control, retention policy</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 py-2">App Service</td>
+                                        <td class="px-3 py-2">Host dashboards, APIs</td>
+                                        <td class="px-3 py-2">Role-based access, monitoring</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 py-2">Active Directory</td>
+                                        <td class="px-3 py-2">User authentication</td>
+                                        <td class="px-3 py-2">Identity, least privilege</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- App Layout -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="w-full bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                    <!-- Logo Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    Vision-based Remote Monitoring
+                    <!-- Tooltips: Header Title -->
+                    <span class="flex gap-1 ml-2">
+                        <button class="group relative" aria-label="Task & Persona">
+                            <span class="text-base">👥</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+                                <ul class="list-disc pl-4">
+                                    <li>UX Designer: Define navigation, layout</li>
+                                    <li>Cloud Architect: Ensure secure access</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Reusable for other dashboards?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Design Intent">
+                            <span class="text-base">🎯</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+                                <div>Provide global navigation, user context, and quick access to key actions.</div>
+                                <div class="mt-2 text-gray-400 text-xs">Could this be a shared component?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="AI Impact">
+                            <span class="text-base">🧠</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+                                <ul>
+                                    <li class="text-green-400">+ Personalized experience</li>
+                                    <li class="text-red-400">- Risk of overexposing sensitive info</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Show user role, last login, etc.</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Implementation Helper">
+                            <span class="text-base">🛠️</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-200">Implementation Helper</div>
+                                <ul>
+                                    <li>Is this duplicating an existing nav?</li>
+                                    <li>Can it be parameterized for other apps?</li>
+                                </ul>
+                            </div>
+                        </button>
+                    </span>
+                </h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <label for="scene-select" class="sr-only">Select Factory Area</label>
+                <select id="scene-select" class="bg-gray-800 text-white rounded-md border border-gray-700 p-2 pr-8 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Select Factory Area" title="Select Factory Area">
+                    <option>Assembly Line</option>
+                    <option>Packaging Area</option>
+                    <option>Warehouse Zone</option>
+                    <option>Loading Bays</option>
+                </select>
+                <div class="px-3 py-1 bg-blue-800 rounded-md text-sm flex items-center">
+                    <span class="mr-2">Current Scene:</span>
+                    <span class="font-semibold text-blue-200">Assembly Line</span>
+                </div>
+                <div class="px-3 py-1 bg-gray-800 rounded-md text-sm">
+                    Live: <span>12:00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium hidden sm:inline">Michelle H.</span>
+                    <img src="core/images/persona-icons/Michelle Harris.jpg" alt="User Profile" class="w-8 h-8 rounded-full border border-gray-700">
+                </div>
+            </div>
+        </header>
+        <!-- Main + Sidebar -->
+        <div class="flex-1 flex flex-col lg:flex-row">
+            <!-- Main Content -->
+            <main class="flex-1 bg-black p-6 flex flex-col">
+                <!-- 360° YouTube Video Player with tooltips -->
+                <div class="w-full aspect-video bg-gray-800 rounded-lg overflow-hidden mb-8 flex items-center justify-center relative">
+                    <iframe
+                        class="w-full h-full min-h-[320px]"
+                        src="https://www.youtube.com/embed/MNcTGdGIz2A?rel=0&modestbranding=1&autohide=1&showinfo=0&controls=0&autoplay=1&loop=1&mute=1&enablejsapi=1&playlist=MNcTGdGIz2A"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        title="Factory 360° video feed">
+                    </iframe>
+                    <!-- Tooltips: Video Player -->
+                    <div class="absolute top-2 right-2 flex gap-1">
+                        <button class="group relative" aria-label="Task & Persona">
+                            <span class="text-base">👥</span>
+                            <div class="hidden group-hover:block absolute right-0 top-full z-30 mt-2 w-64 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+                                <ul class="list-disc pl-4">
+                                    <li>Operator: Monitor video, respond to events</li>
+                                    <li>Controls Engineer: Integrate telemetry overlays</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Would this scale to 10x more cameras?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Design Intent">
+                            <span class="text-base">🎯</span>
+                            <div class="hidden group-hover:block absolute right-0 top-full z-30 mt-2 w-64 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+                                <div>Show live 360° video with overlays for real-time monitoring.</div>
+                                <div class="mt-2 text-gray-400 text-xs">Could this use Azure Video Analyzer?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="AI Impact">
+                            <span class="text-base">🧠</span>
+                            <div class="hidden group-hover:block absolute right-0 top-full z-30 mt-2 w-64 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+                                <ul>
+                                    <li class="text-green-400">+ Early anomaly detection</li>
+                                    <li class="text-red-400">- Risk of missed events if model fails</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Show confidence score, allow override</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Implementation Helper">
+                            <span class="text-base">🛠️</span>
+                            <div class="hidden group-hover:block absolute right-0 top-full z-30 mt-2 w-64 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-200">Implementation Helper</div>
+                                <ul>
+                                    <li>Can overlays be toggled per user?</li>
+                                    <li>Is video bandwidth optimized?</li>
+                                </ul>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-2 text-gray-300">
+                    <h2 class="text-2xl font-bold mb-4">Factory Floor Overview</h2>
+                    <p>This is the main content area. Add your 360° video overlays and telemetry here.</p>
+                </div>
+            </main>
+            <!-- Sidebar -->
+            <aside class="w-full lg:w-[320px] bg-gray-900 border-t lg:border-t-0 lg:border-l border-gray-800 p-6 flex flex-col">
+                <div class="flex items-center mb-4 gap-2">
+                    <h2 class="text-lg font-bold text-white">Factory KPIs</h2>
+                    <!-- Tooltips: KPIs -->
+                    <span class="flex gap-1 ml-2">
+                        <button class="group relative" aria-label="Task & Persona">
+                            <span class="text-base">👥</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+                                <ul class="list-disc pl-4">
+                                    <li>Manager: Track production, efficiency</li>
+                                    <li>Operator: Monitor daily targets</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Are KPIs standardized across sites?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Design Intent">
+                            <span class="text-base">🎯</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+                                <div>Summarize key metrics for quick assessment. Data: OEE, throughput, downtime, quality.</div>
+                                <div class="mt-2 text-gray-400 text-xs">Could this be automated with Power BI?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="AI Impact">
+                            <span class="text-base">🧠</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+                                <ul>
+                                    <li class="text-green-400">+ Predictive insights, anomaly detection</li>
+                                    <li class="text-red-400">- Risk of misinterpretation</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Show confidence, allow user override</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Implementation Helper">
+                            <span class="text-base">🛠️</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-200">Implementation Helper</div>
+                                <ul>
+                                    <li>How are targets set?</li>
+                                    <li>Is this logic reusable?</li>
+                                </ul>
+                            </div>
+                        </button>
+                    </span>
+                </div>
+                <ul class="mb-6 space-y-2">
+                    <li class="flex justify-between"><span>OEE</span><span class="font-bold text-green-400">92.1%</span></li>
+                    <li class="flex justify-between"><span>Throughput</span><span class="font-bold text-blue-300">1,240/hr</span></li>
+                    <li class="flex justify-between"><span>Downtime</span><span class="font-bold text-red-400">0.8%</span></li>
+                    <li class="flex justify-between"><span>Quality Yield</span><span class="font-bold text-green-300">99.2%</span></li>
+                </ul>
+                <div class="flex items-center mt-8 mb-4 gap-2">
+                    <h2 class="text-lg font-bold text-white">Alerts</h2>
+                    <!-- Tooltips: Alerts -->
+                    <span class="flex gap-1 ml-2">
+                        <button class="group relative" aria-label="Task & Persona">
+                            <span class="text-base">👥</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+                                <ul class="list-disc pl-4">
+                                    <li>Operator: Respond to issues</li>
+                                    <li>Engineer: Investigate root cause</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">How are alerts prioritized?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Design Intent">
+                            <span class="text-base">🎯</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+                                <div>Highlight urgent issues for rapid response. Data: alarms, thresholds, AI events.</div>
+                                <div class="mt-2 text-gray-400 text-xs">What triggers escalation?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="AI Impact">
+                            <span class="text-base">🧠</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+                                <ul>
+                                    <li class="text-green-400">+ Faster detection, fewer misses</li>
+                                    <li class="text-red-400">- Alert fatigue risk</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Show alert source, allow feedback</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Implementation Helper">
+                            <span class="text-base">🛠️</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-200">Implementation Helper</div>
+                                <ul>
+                                    <li>How are alerts configured?</li>
+                                    <li>Can this be parameterized?</li>
+                                </ul>
+                            </div>
+                        </button>
+                    </span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2 bg-red-900 bg-opacity-60 border-l-4 border-red-500 p-2 rounded">
+                        <span class="text-red-400 text-lg">&#9888;</span>
+                        <div class="flex-1">
+                            <div class="font-semibold text-white">Labeller 01: Overheat</div>
+                            <div class="text-xs text-red-200">Temp 92°C — Immediate action required</div>
+                        </div>
+                        <button class="text-xs bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded">Ack</button>
+                    </div>
+                    <div class="flex items-center gap-2 bg-yellow-900 bg-opacity-60 border-l-4 border-yellow-500 p-2 rounded">
+                        <span class="text-yellow-400 text-lg">&#9888;</span>
+                        <div class="flex-1">
+                            <div class="font-semibold text-white">Loading Bay 3: Truck Overtime</div>
+                            <div class="text-xs text-yellow-200">Waiting 18m — Check schedule</div>
+                        </div>
+                        <button class="text-xs bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded">Ack</button>
+                    </div>
+                </div>
+                <div class="flex items-center mt-8 mb-4 gap-2">
+                    <h2 class="text-lg font-bold text-white">Visual Event Detection</h2>
+                    <!-- Tooltips: Visual Event Detection -->
+                    <span class="flex gap-1 ml-2">
+                        <button class="group relative" aria-label="Task & Persona">
+                            <span class="text-base">👥</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-300">Personas & Tasks</div>
+                                <ul class="list-disc pl-4">
+                                    <li>Operator: Review detected events</li>
+                                    <li>Engineer: Validate AI findings</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">How are events validated?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Design Intent">
+                            <span class="text-base">🎯</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-yellow-300">Design Intent</div>
+                                <div>Show AI-detected anomalies and events for review. Data: vision, sensor, AI models.</div>
+                                <div class="mt-2 text-gray-400 text-xs">What is the review workflow?</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="AI Impact">
+                            <span class="text-base">🧠</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-green-300">AI Impact</div>
+                                <ul>
+                                    <li class="text-green-400">+ Detects subtle issues, improves safety</li>
+                                    <li class="text-red-400">- False positives possible</li>
+                                </ul>
+                                <div class="mt-2 text-gray-400 text-xs">Show model confidence, allow feedback</div>
+                            </div>
+                        </button>
+                        <button class="group relative" aria-label="Implementation Helper">
+                            <span class="text-base">🛠️</span>
+                            <div class="hidden group-hover:block absolute left-1/2 top-full z-30 mt-2 w-64 -translate-x-1/2 rounded bg-gray-900 text-xs shadow-lg border border-gray-700 p-3 text-left">
+                                <div class="font-semibold mb-1 text-blue-200">Implementation Helper</div>
+                                <ul>
+                                    <li>How are events reviewed?</li>
+                                    <li>Is this logic reusable?</li>
+                                </ul>
+                            </div>
+                        </button>
+                    </span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2 bg-green-900 bg-opacity-60 border-l-4 border-green-500 p-2 rounded">
+                        <span class="text-green-400 text-lg">&#10003;</span>
+                        <div class="flex-1">
+                            <div class="font-semibold text-white">No anomalies detected</div>
+                            <div class="text-xs text-green-200">All systems normal</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 bg-yellow-900 bg-opacity-60 border-l-4 border-yellow-500 p-2 rounded">
+                        <span class="text-yellow-400 text-lg">&#9888;</span>
+                        <div class="flex-1">
+                            <div class="font-semibold text-white">Unusual object detected</div>
+                            <div class="text-xs text-yellow-200">Packaging Area — Review footage</div>
+                        </div>
+                        <button class="text-xs bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded">Review</button>
+                    </div>
+                </div>
+                <div class="mt-auto pt-6 text-xs text-gray-400 border-t border-gray-800">
+                    Last updated: <span class="text-gray-300">2 minutes ago</span>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <script>
+    // Storyboard Modal Logic
+    const trigger = document.getElementById('storyboard-trigger');
+    const modal = document.getElementById('storyboard-modal');
+    const closeBtn = document.getElementById('storyboard-close');
+    const tabs = document.querySelectorAll('.story-tab');
+    const scenarios = document.querySelectorAll('.story-scenario');
+    trigger.addEventListener('click', () => { modal.classList.remove('hidden'); });
+    closeBtn.addEventListener('click', () => { modal.classList.add('hidden'); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('text-blue-300', 'border-blue-500'));
+            tab.classList.add('text-blue-300', 'border-blue-500');
+            scenarios.forEach(s => s.classList.add('hidden'));
+            document.querySelector(`.story-scenario[data-tab="${tab.dataset.tab}"]`).classList.remove('hidden');
+        });
+    });
+
+    // Tooltip click-to-expand for mobile accessibility
+    document.querySelectorAll('button.group').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if(window.innerWidth < 768) {
+                e.preventDefault();
+                const flyout = btn.querySelector('div');
+                if(flyout) flyout.classList.toggle('hidden');
+            }
+        });
+    });
+    </script>
+</body>
+</html>
